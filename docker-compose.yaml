@@ -1,0 +1,110 @@
+version: '3.8'
+services:
+
+  proxy:
+    depends_on: 
+      - simulator
+      - management
+    image: nginx:1.22-alpine
+    volumes:
+    - ./proxy_templates/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+    - 8080:80
+
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - $RABBIT_PORT
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  postgresql:
+    image: postgres:10
+    ports:
+      - $POSTGRES_PORT:$POSTGRES_PORT
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+      PGUSER: postgres
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./migration/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db:/var/lib/postgresql
+
+  management:
+    depends_on: 
+      postgresql:
+        condition: service_healthy
+    build:
+      context: ./fleet_management_service
+      dockerfile: ./fleet_management_service.Dockerfile
+    ports:
+    - $MANAGEMENT_PORT:$MANAGEMENT_PORT
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_HOST: $POSTGRES_HOST
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_PORT: $POSTGRES_PORT
+      MANAGEMENT_PORT: $MANAGEMENT_PORT
+      ECHO: False
+    restart: unless-stopped
+
+  simulator:
+    build:
+      context: ./gps_simulator
+      dockerfile: ./gps_simulator.Dockerfile
+    depends_on: 
+      rabbitmq:
+        condition: service_healthy
+      management:
+        condition: service_started
+    ports:
+    - $GPS_SIMULATOR_PORT:$GPS_SIMULATOR_PORT
+    environment:
+      RABBIT_EXCHANGE: $RABBIT_EXCHANGE
+      RABBIT_HOST: $RABBIT_HOST
+      RABBIT_PORT: $RABBIT_PORT
+      RABBIT_QUEUE: $RABBIT_QUEUE
+      RABBIT_ROUTING_KEY: $RABBIT_ROUTING_KEY
+      GPS_SIMULATOR_HOST: $GPS_SIMULATOR_HOST
+      GPS_SIMULATOR_PORT: $GPS_SIMULATOR_PORT
+      MANAGEMENT_HOST: $MANAGEMENT_HOST
+      MANAGEMENT_PORT: $MANAGEMENT_PORT
+    restart: unless-stopped 
+
+  monitor:
+    build:
+      context: ./vehicle_monitoring_system
+      dockerfile: ./vehicle_monitoring_system.Dockerfile
+    depends_on: 
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      RABBIT_EXCHANGE: $RABBIT_EXCHANGE
+      RABBIT_HOST: $RABBIT_HOST
+      RABBIT_PORT: $RABBIT_PORT
+      RABBIT_QUEUE: $RABBIT_QUEUE
+      RABBIT_ROUTING_KEY: $RABBIT_ROUTING_KEY
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_HOST: $POSTGRES_HOST
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_PORT: $POSTGRES_PORT
+      ECHO: False
+    restart: unless-stopped 
+
+
+volumes:
+  db:
+  migration:
