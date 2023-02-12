@@ -49,7 +49,7 @@ services:
       context: ./fleet_management_service
       dockerfile: ./fleet_management_service.Dockerfile
     ports:
-    - $MANAGEMENT_PORT:$MANAGEMENT_PORT
+    - $MANAGEMENT_PORT
     environment:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_HOST: $POSTGRES_HOST
@@ -70,7 +70,7 @@ services:
       management:
         condition: service_started
     ports:
-    - $GPS_SIMULATOR_PORT:$GPS_SIMULATOR_PORT
+    - $GPS_SIMULATOR_PORT
     environment:
       RABBIT_EXCHANGE: $RABBIT_EXCHANGE
       RABBIT_HOST: $RABBIT_HOST
