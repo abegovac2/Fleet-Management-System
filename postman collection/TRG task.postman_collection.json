@@ -1,0 +1,480 @@
+{
+	"info": {
+		"_postman_id": "7e07b626-0539-4ab6-a4e3-d4c1cc672b39",
+		"name": "TRG task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15650105"
+	},
+	"item": [
+		{
+			"name": "Vehicle",
+			"item": [
+				{
+					"name": "List all vehicles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/vehicle/list",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"vehicle",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single vehicle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/vehicle/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"vehicle",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New vehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"type\": \"string\",\r\n    \"registration\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/management/api/v1/vehicle/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"vehicle",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit vehicle",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"type\": \"bobo\",\r\n    \"registration\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/management/api/v1/vehicle/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"vehicle",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete vehicle",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/vehicle/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"vehicle",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Trip",
+			"item": [
+				{
+					"name": "List all trips",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/trip/list",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"trip",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single trip",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/trip/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"trip",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New trip",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"departure_geo_point\": \"0,0\",\r\n    \"destination_geo_point\": \"3,3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/management/api/v1/trip/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"trip",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit trip",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"departure_geo_point\": \"2,45\",\r\n    \"destination_geo_point\": \"3,3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/management/api/v1/trip/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"trip",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete trip",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/trip/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"trip",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Driver",
+			"item": [
+				{
+					"name": "List all drivers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/driver/list",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"driver",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single driver",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/driver/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"driver",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New driver",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 0,\r\n    \"full_name\": \"Test Test\",\r\n    \"points\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/management/api/v1/driver/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"driver",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit driver",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"full_name\": \"Test1 Test1\",\r\n    \"points\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/management/api/v1/driver/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"driver",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete driver",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/driver/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"driver",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Assign",
+			"item": [
+				{
+					"name": "Add vehicle to trip",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/assign/trip/1/vehicle/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"assign",
+								"trip",
+								"1",
+								"vehicle",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add driver to vehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/management/api/v1/assign/driver/1/vehicle/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"management",
+								"api",
+								"v1",
+								"assign",
+								"driver",
+								"1",
+								"vehicle",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "start trip",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"trip_id\": 1,\r\n    \"vehicle_id\": 1,\r\n    \"driver_id\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/simulator/start-trip",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"simulator",
+						"start-trip"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8080"
+		}
+	]
+}
