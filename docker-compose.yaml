@@ -7,7 +7,7 @@ services:
       - management
     image: nginx:1.22-alpine
     volumes:
-    - ./proxy_templates/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./gateway_templates/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
     - 8080:80
 
