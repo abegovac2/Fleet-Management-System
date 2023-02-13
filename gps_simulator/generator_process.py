@@ -1,9 +1,8 @@
 import random
-import pika
-import config
 from copy import deepcopy
 from math import sqrt, atan, sin, cos
 from time import sleep
+from rabbit_client import RabbitEnqueuer
 
 def __format_point__(point:str):
     sp = point.split(',')
@@ -17,34 +16,6 @@ class ConstConfig:
     end = 55
     step = 10
     decimals = 4
-
-
-class RabbitQueuer:
-    def __init__(self, queue_name, exchange, routing_key='', exchange_type='direct') -> None:
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(
-                host = config.RABBIT_HOST, 
-                port = config.RABBIT_PORT)
-            )
-        self.channel = self.connection.channel()
-        self.channel.exchange_declare(exchange=exchange, exchange_type=exchange_type)
-        self.channel.queue_declare(queue=queue_name)
-        self.channel.queue_bind(exchange=exchange, queue=queue_name, routing_key=routing_key)
-        self.queue_name = queue_name
-        self.exchange = exchange
-        self.routing_key = routing_key
-
-    
-    def __del__(self):
-        self.connection.close()
-    
-    
-    def basic_publish(self, body):
-        print("body", body)
-        self.channel.basic_publish(
-            exchange=self.exchange,
-            routing_key=self.routing_key,
-            body=str(body)
-        )
 
 
 # in meters
@@ -70,7 +41,6 @@ def static_const(**kwargs):
     return decorate
 
 
-
 # Since the calc is done every second the time is taken as one second
 # But the result is given in km/h
 def calc_speed(dist: float):
@@ -78,7 +48,6 @@ def calc_speed(dist: float):
 
 
 def start_trip_process(vehicle_id, departure_geo_point, destination_geo_point, queue, exchange, routing_key, driver_id):
-    #args = [vehicle_id, departure_geo_point, destination_geo_point, queue, exchange, routing_key, drver_id]
     start = __format_point__(departure_geo_point)
     end = __format_point__(destination_geo_point)
 
@@ -96,7 +65,7 @@ def start_trip_process(vehicle_id, departure_geo_point, destination_geo_point, q
                 )
                 }
 
-    def generate_trip(vehicle_id:int, start, end, queuer: RabbitQueuer, driver_id):
+    def generate_trip(vehicle_id:int, start, end, queuer: RabbitEnqueuer, driver_id):
         last = deepcopy(start)
         covered_dist, current_dist = 0, 0
         # As distance between two geo poins is given in km, we have to convert to meters
@@ -127,7 +96,7 @@ def start_trip_process(vehicle_id, departure_geo_point, destination_geo_point, q
         vehicle_id=vehicle_id,
         start=start,
         end=end,
-        queuer=RabbitQueuer(
+        queuer=RabbitEnqueuer(
             queue_name=queue,
             exchange=exchange,
             routing_key=routing_key

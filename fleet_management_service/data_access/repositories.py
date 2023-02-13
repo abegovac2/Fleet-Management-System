@@ -56,6 +56,8 @@ class DriverRepository(BaseRepository):
     def __init__(self, db) -> None:
         super().__init__(Driver, db)
 
+
+
 class AssigmentRepository:
     def __init__(self, db) -> None:
         self._db_ = db

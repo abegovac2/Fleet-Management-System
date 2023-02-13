@@ -1,7 +1,7 @@
 version: '3.8'
 services:
 
-  proxy:
+  gateway:
     depends_on: 
       - simulator
       - management
@@ -11,16 +11,20 @@ services:
     ports:
     - 8080:80
 
+
+
   rabbitmq:
     image: rabbitmq:latest
     ports:
-      - $RABBIT_PORT
+      - $RMQ_PORT
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 10s
       timeout: 10s
       retries: 5
     restart: unless-stopped
+
+
 
   postgresql:
     image: postgres:10
@@ -41,6 +45,8 @@ services:
       - ./migration/init.sql:/docker-entrypoint-initdb.d/init.sql
       - db:/var/lib/postgresql
 
+
+
   management:
     depends_on: 
       postgresql:
@@ -51,14 +57,25 @@ services:
     ports:
     - $MANAGEMENT_PORT
     environment:
+      RMQ_DRIVER_EXCHANGE: $RMQ_DRIVER_EXCHANGE
+      RMQ_DRIVER_NAME: $RMQ_DRIVER_NAME
+      RMQ_DRIVER_ROUTING_KEY: $RMQ_DRIVER_ROUTING_KEY
+
+      RMQ_HOST: $RMQ_HOST
+      RMQ_PORT: $RMQ_PORT
+
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_HOST: $POSTGRES_HOST
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_DB: $POSTGRES_DB
       POSTGRES_PORT: $POSTGRES_PORT
+
       MANAGEMENT_PORT: $MANAGEMENT_PORT
+
       ECHO: False
     restart: unless-stopped
+
+
 
   simulator:
     build:
@@ -72,16 +89,20 @@ services:
     ports:
     - $GPS_SIMULATOR_PORT
     environment:
-      RABBIT_EXCHANGE: $RABBIT_EXCHANGE
-      RABBIT_HOST: $RABBIT_HOST
-      RABBIT_PORT: $RABBIT_PORT
-      RABBIT_QUEUE: $RABBIT_QUEUE
-      RABBIT_ROUTING_KEY: $RABBIT_ROUTING_KEY
-      GPS_SIMULATOR_HOST: $GPS_SIMULATOR_HOST
+      RMQ_POINTS_EXCHANGE: $RMQ_POINTS_EXCHANGE
+      RMQ_POINTS_NAME: $RMQ_POINTS_NAME
+      RMQ_POINTS_ROUTING_KEY: $RMQ_POINTS_ROUTING_KEY
+
+      RMQ_HOST: $RMQ_HOST
+      RMQ_PORT: $RMQ_PORT
+      
       GPS_SIMULATOR_PORT: $GPS_SIMULATOR_PORT
+
       MANAGEMENT_HOST: $MANAGEMENT_HOST
       MANAGEMENT_PORT: $MANAGEMENT_PORT
     restart: unless-stopped 
+
+
 
   monitor:
     build:
@@ -91,16 +112,23 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      RABBIT_EXCHANGE: $RABBIT_EXCHANGE
-      RABBIT_HOST: $RABBIT_HOST
-      RABBIT_PORT: $RABBIT_PORT
-      RABBIT_QUEUE: $RABBIT_QUEUE
-      RABBIT_ROUTING_KEY: $RABBIT_ROUTING_KEY
+      RMQ_POINTS_EXCHANGE: $RMQ_POINTS_EXCHANGE
+      RMQ_POINTS_NAME: $RMQ_POINTS_NAME
+      RMQ_POINTS_ROUTING_KEY: $RMQ_POINTS_ROUTING_KEY
+
+      RMQ_DRIVER_EXCHANGE: $RMQ_DRIVER_EXCHANGE
+      RMQ_DRIVER_NAME: $RMQ_DRIVER_NAME
+      RMQ_DRIVER_ROUTING_KEY: $RMQ_DRIVER_ROUTING_KEY
+
+      RMQ_HOST: $RMQ_HOST
+      RMQ_PORT: $RMQ_PORT
+
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_HOST: $POSTGRES_HOST
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_DB: $POSTGRES_DB
       POSTGRES_PORT: $POSTGRES_PORT
+
       ECHO: False
     restart: unless-stopped 
 

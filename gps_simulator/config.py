@@ -3,11 +3,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-RABBIT_EXCHANGE = os.environ["RABBIT_EXCHANGE"]
-RABBIT_HOST = os.environ["RABBIT_HOST"]
-RABBIT_PORT = os.environ["RABBIT_PORT"]
-RABBIT_QUEUE = os.environ["RABBIT_QUEUE"]
-RABBIT_ROUTING_KEY = os.environ["RABBIT_ROUTING_KEY"]
+RMQ_POINTS_EXCHANGE= os.environ["RMQ_POINTS_EXCHANGE"]
+RMQ_POINTS_NAME= os.environ["RMQ_POINTS_NAME"]
+RMQ_POINTS_ROUTING_KEY= os.environ["RMQ_POINTS_ROUTING_KEY"]
+
+RMQ_HOST= os.environ["RMQ_HOST"]
+RMQ_PORT= os.environ["RMQ_PORT"]
 
 MANAGEMENT_SERVICE = f"http://{os.environ['MANAGEMENT_HOST']}:{os.environ['MANAGEMENT_PORT']}/api/v1"
 
