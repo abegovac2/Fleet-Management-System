@@ -1,5 +1,7 @@
 # Fleet Management System
 
+***IMPORTANT!***  `.env` file left in repo for demo purposes
+
 ## Description
 
 Project consists of three systems:
